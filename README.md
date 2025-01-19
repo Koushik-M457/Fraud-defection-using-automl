@@ -1,74 +1,124 @@
-# Fraud-defection-using-automl
-import numpy as np
-import pandas as pd
-df= pd.read_csv("/content/drive/MyDrive/dataset/bankfrauddefectiom.csv")
-df.head()
+This project explores the use of AutoML frameworks to automate the process of detecting fraudulent transactions in credit card datasets. By leveraging libraries such as H2O AutoML and FLAML, the project demonstrates how to train, evaluate, and deploy machine learning models for fraud detection with minimal manual intervention.
 
-d['Class'].value_counts()
+Features
 
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-scalar = StandardScaler()
-X = d.drop('Class', axis=1)
-y = d.Class
-X = scalar.fit_transform(X)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
-# h2o.ai
-import h2o
-from h2o.automl import H2OAutoML
-h2o.init()
-df = h2o.import_file("/content/drive/MyDrive/dataset/bankfrauddefectiom.csv")
-df.head(10)
-df = h2o.import_file('/content/drive/MyDrive/dataset/bankfrauddefectiom.csv')
-x = df.columns[:-1]  # Features
-y = 'Class'  
-train, test = df.split_frame(ratios=[0.8], seed=42)
-aml = H2OAutoML(max_runtime_secs=300, seed=42)
-aml.train(x=x, y=y, training_frame=train)
-lb = aml.leaderboard
-print(lb)
+Data Preprocessing:
 
-best_model = aml.leader
-perf = best_model.model_performance(test)
-print(perf)
+Reads and preprocesses the credit card fraud dataset.
 
-best_model = aml.leader
-perf = best_model.model_performance(test)
-print(perf)
+Scales features using StandardScaler for model compatibility.
 
-import seaborn as sns
-sns.heatmap(confusion, annot=True)
-from sklearn.metrics import classification_report , confusion_matrix
-cm = np.array(confusion_matrix(y_test, y_predict, labels=[1,0]))
-confusion = pd.DataFrame(cm, index=['is Fraud', 'is Normal'],columns=['predicted fraud','predicted normal'])
-confusion
-print(classification_report(y_test, y_predict))
+Splits the dataset into training and testing sets.
 
-#uding flaml
-pip install flaml
-from flaml import AutoML
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-df = pd.read_csv("/content/drive/MyDrive/dataset/bankfrauddefectiom.csv")
-df.head()
-X = df.drop(columns=['Class'])
-y = df['Class']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+Model Training:
 
-automl = AutoML()
-automl_settings = {
-    "time_budget": 600,  # in seconds
-    "metric": 'accuracy',
-    "task": 'classification',
-    "log_file_name": 'credit_card_fraud_detection.log',
-}
-automl.fit(X_train, y_train, **automl_settings)
-y_pred = automl.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-print("Test Accuracy:", accuracy)
-from sklearn.metrics import classification_report , confusion_matrix
-cm = np.array(confusion_matrix(y_test, y_predict, labels=[1,0]))
-confusion = pd.DataFrame(cm, index=['is Fraud', 'is Normal'],columns=['predicted fraud','predicted normal'])
-confusion
-print(classification_report(y_test, y_predict))
+Utilizes H2O AutoML to automatically select the best model from a range of algorithms.
+
+Implements FLAML for efficient and fast AutoML.
+
+Compares multiple models using performance metrics.
+
+Evaluation Metrics:
+
+Accuracy, precision, recall, F1 score, and ROC-AUC.
+
+Confusion matrix visualization with Seaborn heatmaps.
+
+Deployment:
+
+Integrates a simple user interface for fraud prediction using Gradio.
+
+Dataset
+
+Name: Credit Card Fraud Detection Dataset
+
+Source: The dataset is loaded from a specified path. It contains anonymized credit card transactions labeled as fraudulent or normal.
+
+Structure: Features include transaction attributes and a Class column for labels (1 for fraud and 0 for normal).
+
+Project Workflow
+
+Data Loading and Preprocessing
+
+Load the dataset using Pandas and H2O.
+
+Encode and scale features.
+
+Split data into training and testing subsets.
+
+AutoML Implementation
+
+H2O AutoML:
+
+Automatically trains multiple models and selects the best-performing one.
+
+Provides a leaderboard of model performances.
+
+FLAML:
+
+Fast and lightweight AutoML for quick experimentation.
+
+Model Evaluation
+
+Use the test dataset to evaluate model accuracy, precision, recall, and F1 score.
+
+Generate confusion matrices to visualize prediction performance.
+
+Interactive Deployment
+
+Build a Gradio-based web interface for predicting fraud based on transaction details.
+
+Prerequisites
+
+Python 3.7+
+
+Required Libraries:
+
+pandas
+numpy
+scikit-learn
+seaborn
+h2o
+flaml
+gradio
+
+How to Run the Project
+
+Clone the repository or download the project files.
+
+Install the required libraries using:
+
+pip install -r requirements.txt
+
+Run the Jupyter Notebook (Automl.ipynb) to:
+
+Load and preprocess the dataset.
+
+Train models using AutoML frameworks.
+
+Evaluate model performance.
+
+Launch the Gradio interface for fraud prediction:
+
+gr.Interface(fn=defection, inputs="number", outputs="text", title=headline).launch()
+
+Key Results
+
+Achieved significant model performance improvement using AutoML frameworks.
+
+Built an intuitive user interface for real-time fraud detection.
+
+Future Scope
+
+Experiment with additional AutoML frameworks like AutoKeras or TPOT.
+
+Integrate the model into a production-grade API or dashboard.
+
+Explore advanced interpretability techniques to explain fraud predictions.
+
+Acknowledgments
+
+Thanks to H2O.ai for their robust AutoML tools.
+
+Gradio for providing a simple and efficient UI framework.
+
